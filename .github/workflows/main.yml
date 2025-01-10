@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - '*'
+    branches:
+      - '*' 
 jobs:
   build-1:
     runs-on: windows-2022
