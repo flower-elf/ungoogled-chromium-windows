@@ -1,6 +1,11 @@
 name: CI
 on:  
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for the release'
+        required: true
+        default: ''
 jobs:
   build-1:
     runs-on: windows-2022
