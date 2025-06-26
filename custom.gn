@@ -1,0 +1,3 @@
+invoker_toolchain_args = {
+  extra_cflags = [ "/arch:AVX512" ]
+}
