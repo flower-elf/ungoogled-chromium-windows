@@ -15,4 +15,10 @@ symbol_level=0
 enable_rust=true
 enable_mse_mpeg2ts_stream_parser=true
 use_thin_lto=true
-extra_cflags = [ "/arch:AVX512" ]
+config("custom_compiler_flags") {
+  cflags = [
+    "/arch:AVX512",
+  ]
+}
+
+extra_configs += [ ":custom_compiler_flags" ]
