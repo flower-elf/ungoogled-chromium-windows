@@ -5,7 +5,7 @@
      # next step after SSE2 will be AVX.
      if (current_cpu == "x86" || current_cpu == "x64") {
 -      cflags += [ "-msse3" ]
-+      cflags += [ "-mavx2" ]
++      cflags += [ "-march=haswell" ]
      }
  
      # Enable ANSI escape codes if something emulating them is around (cmd.exe
