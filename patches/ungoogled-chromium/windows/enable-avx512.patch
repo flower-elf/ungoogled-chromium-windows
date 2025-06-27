@@ -11,7 +11,7 @@
      # Enable ANSI escape codes if something emulating them is around (cmd.exe
 --- a/third_party/tflite/BUILD.gn
 +++ b/third_party/tflite/BUILD.gn
-@@ -97,6 +97,15 @@
+@@ -97,6 +97,16 @@
      "NEON2SSE_DISABLE_PERFORMANCE_WARNING",
      "TFL_STATIC_LIBRARY_BUILD",
    ]
@@ -22,6 +22,7 @@
 +      "-mno-avx",
 +      "-mno-avx2",
 +      "-mno-fma",
++      "-mno-avx512f",
 +    ]
 +  }
    if (!is_debug) {
