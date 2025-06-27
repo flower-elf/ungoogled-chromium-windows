@@ -1,5 +1,5 @@
---- a/build/config/win/compiler.gni
-+++ b/build/config/win/compiler.gni
+--- a/build/config/win/BUILD.gn
++++ b/build/config/win/BUILD.gn
 @@ -120,7 +120,7 @@
      # microarchitecture. MSVC only supports a subset of architectures, and the
      # next step after SSE2 will be AVX.
