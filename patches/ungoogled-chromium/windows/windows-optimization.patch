@@ -9,8 +9,6 @@
  
  if (is_win) {
    ldflags += [
---- a/build/config/compiler/BUILD.gn
-+++ b/build/config/compiler/BUILD.gn
 @@ -1188,7 +1188,7 @@
    if (!is_debug && use_thin_lto && is_a_target_toolchain) {
      if (thin_lto_enable_optimizations) {
