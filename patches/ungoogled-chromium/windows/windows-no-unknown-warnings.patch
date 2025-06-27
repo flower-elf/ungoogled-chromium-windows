@@ -3,11 +3,10 @@
 
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
-@@ -69,6 +69,9 @@ config("compiler") {
+@@ -69,6 +69,8 @@ config("compiler") {
    if (is_clang) {
      cflags += [
        "/Zc:twoPhase",
-+      "/arch:AVX512",
 +      "-Wno-unknown-warning-option",
 +      "-Wno-unknown-argument",
  
