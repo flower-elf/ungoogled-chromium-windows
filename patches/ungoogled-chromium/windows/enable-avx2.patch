@@ -5,13 +5,13 @@
      # next step after SSE2 will be AVX.
      if (current_cpu == "x86" || current_cpu == "x64") {
 -      cflags += [ "-msse3" ]
-+      cflags += [ "-mavx512" ]
++      cflags += [ "-mavx2" ]
      }
  
      # Enable ANSI escape codes if something emulating them is around (cmd.exe
 --- a/third_party/tflite/BUILD.gn
 +++ b/third_party/tflite/BUILD.gn
-@@ -97,6 +97,16 @@
+@@ -97,6 +97,15 @@
      "NEON2SSE_DISABLE_PERFORMANCE_WARNING",
      "TFL_STATIC_LIBRARY_BUILD",
    ]
@@ -22,7 +22,6 @@
 +      "-mno-avx",
 +      "-mno-avx2",
 +      "-mno-fma",
-+      "-mno-avx512f",
 +    ]
 +  }
    if (!is_debug) {
