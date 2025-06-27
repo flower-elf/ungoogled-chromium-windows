@@ -9,3 +9,21 @@
      }
  
      # Enable ANSI escape codes if something emulating them is around (cmd.exe
+--- a/third_party/tflite/BUILD.gn
++++ b/third_party/tflite/BUILD.gn
+@@ -97,6 +97,15 @@
+     "NEON2SSE_DISABLE_PERFORMANCE_WARNING",
+     "TFL_STATIC_LIBRARY_BUILD",
+   ]
++  if (current_cpu == "x64") {
++    cflags += [
++      "-march=x86-64",
++      "-msse3",
++      "-mno-avx",
++      "-mno-avx2",
++      "-mno-fma",
++    ]
++  }
+   if (!is_debug) {
+     defines += [ "TF_LITE_STRIP_ERROR_STRINGS" ]
+   }
