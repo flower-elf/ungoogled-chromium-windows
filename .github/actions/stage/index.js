@@ -4,6 +4,7 @@ const io = require('@actions/io');
 const exec = require('@actions/exec');
 const {DefaultArtifactClient} = require('@actions/artifact');
 const glob = require('@actions/glob');
+const github = require('@actions/github'); // *** 关键修复 1: 引入 github 库 ***
 
 async function run() {
     process.on('SIGINT', function() {
@@ -51,11 +52,9 @@ async function run() {
     const isPatchOrBuildFailure = (retCode === 1);
 
     if (isPatchOrBuildFailure) {
-        // --- 新的、轻量级的失败逻辑 ---
         console.error(`Build script failed with exit code ${retCode}. This is likely a build or patch error.`);
         console.log("Attempting to upload .rej files for debugging...");
 
-        // 查找所有 .rej 和 .orig 文件
         const globber = await glob.create('C:\\ungoogled-chromium-windows\\build\\src\\**\\*.rej',
             {matchDirectories: false, followSymbolicLinks: false});
         let rejectFiles = await globber.glob();
@@ -63,11 +62,11 @@ async function run() {
         if (rejectFiles.length > 0) {
             console.log(`Found reject files: ${rejectFiles.join(', ')}`);
             try {
-                // 上传找到的 .rej 文件
+                // *** 关键修复 2: 使用正确的 JavaScript 语法访问 context ***
                 await artifact.uploadArtifact(
-                    `patch-rejects-${github.run_id}-${github.job}`, // 唯一的 artifact 名称
+                    `patch-rejects-${github.context.runId}-${github.context.job}`, // 正确的唯一 artifact 名称
                     rejectFiles, 
-                    'C:\\ungoogled-chromium-windows\\build\\src', // 根目录
+                    'C:\\ungoogled-chromium-windows\\build\\src',
                     {retentionDays: 1}
                 );
                 console.log(".rej files uploaded successfully.");
@@ -78,14 +77,11 @@ async function run() {
             console.log("No .rej files found. The failure might be due to other build errors.");
         }
         
-        // 关键：明确地让步骤失败
         core.setFailed(`Build script failed with a specific build error (exit code ${retCode}). Check logs for details.`);
 
     } else if (isTimeoutOrCancel) {
-        // --- 保留原有的超时逻辑 ---
+        // ... (超时逻辑保持不变) ...
         console.log(`Build script exited with code ${retCode}, indicating a timeout or cancellation. Saving progress...`);
-        
-        // 打包并上传整个 src 目录
         await new Promise(r => setTimeout(r, 5000));
         await exec.exec('7z', ['a', '-tzip', 'C:\\ungoogled-chromium-windows\\artifacts.zip',
             'C:\\ungoogled-chromium-windows\\build\\src', '-mx=3', '-mtc=on'], {ignoreReturnCode: true});
@@ -102,13 +98,10 @@ async function run() {
                 await new Promise(r => setTimeout(r, 10000));
             }
         }
-
-        // 让步骤成功，以便工作流继续
         console.log("Progress saved successfully after timeout/cancellation. The job will continue.");
         core.setOutput('finished', false);
-
     } else { // retCode === 0
-        // --- 成功的逻辑保持不变 ---
+        // ... (成功逻辑保持不变) ...
         core.setOutput('finished', true);
         const globber = await glob.create('C:\\ungoogled-chromium-windows\\build\\ungoogled-chromium*',
             {matchDirectories: false});
