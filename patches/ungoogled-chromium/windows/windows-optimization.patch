@@ -1,14 +1,14 @@
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -800,7 +800,7 @@
-     # [0]: https://pinpoint-dot-chromeperf.appspot.com/job/16984a18be0000
-     # [1]: https://pinpoint-dot-chromeperf.appspot.com/job/11984a18be0000
-     # [2]: https://ci.chromium.org/ui/p/chromium/builders/try/android-binary-size/1848442
--    import_instr_limit = 30
-+    import_instr_limit = 100
+@@ -805,7 +805,7 @@
      if (is_win) {
        ldflags += [
          "/opt:lldltojobs=all",
+-        "-mllvm:-import-instr-limit=$import_instr_limit",
++        "-mllvm:-import-instr-limit=100",
+         "-mllvm:-disable-auto-upgrade-debug-info",
+       ]
+     } else {
 @@ -1191,7 +1191,7 @@
    if (!is_debug && use_thin_lto && is_a_target_toolchain) {
      if (thin_lto_enable_optimizations) {
