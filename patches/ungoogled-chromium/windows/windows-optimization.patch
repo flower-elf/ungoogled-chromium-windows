@@ -19,3 +19,50 @@
      } else {
        lto_opt_level = 0
      }
+@@ -2672,10 +2672,7 @@
+     # clang-cl's /O2 corresponds to clang's -O3, and really want -O2 for
+     # consistency with the other platforms.
+     cflags = [
+-      "/O2",
+-      "/clang:-O2",
+-    ] + common_optimize_on_cflags
++      "-Xclang", "-O3",
++    ] + common_optimize_on_cflags
+ 
+     # The `-O3` for clang turns on extra optimizations compared to the standard
+     # `-O2`. But for rust, `-Copt-level=3` is the default and is thus reliable
+@@ -2695,7 +2692,7 @@
+     # vectorization while otherwise optimizing for size.
+     rustflags = [ "-Copt-level=s" ]
+   } else {
+-    cflags = [ "-O2" ] + common_optimize_on_cflags
++    cflags = [ "-O3" ] + common_optimize_on_cflags
+     # The `-O3` for clang turns on extra optimizations compared to the standard
+     # `-O2`. But for rust, `-Copt-level=3` is the default and is thus reliable
+     # to use.
+@@ -2756,11 +2753,9 @@
+   if (is_win) {
+     # Favor speed over size, /O2 must be before the common flags.
+     # /O2 implies /Ot, /Oi, and /GF.
+-    cflags = [ "/O2" ] + common_optimize_on_cflags
++    cflags = [ "-Xclang", "-O3" ] + common_optimize_on_cflags
+   } else if (optimize_for_fuzzing) {
+     cflags = [ "-O1" ] + common_optimize_on_cflags
+   } else {
+-    cflags = [ "-O2" ] + common_optimize_on_cflags
++    cflags = [ "-O3" ] + common_optimize_on_cflags
+   }
+   rustflags = [ "-Copt-level=3" ]
+ }
+@@ -2776,10 +2771,7 @@
+   if (is_win) {
+     # Favor speed over size, /O2 must be before the common flags.
+     # /O2 implies /Ot, /Oi, and /GF.
+-    cflags = [ "/O2" ] + common_optimize_on_cflags
+-    if (is_clang) {
+-      cflags += [ "/clang:-O3" ]
+-    }
++    cflags = [ "-Xclang", "-O3" ] + common_optimize_on_cflags
+   } else if (optimize_for_fuzzing) {
+     cflags = [ "-O1" ] + common_optimize_on_cflags
+   } else {
