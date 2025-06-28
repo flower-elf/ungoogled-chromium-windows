@@ -3,6 +3,7 @@
 @@ -803,8 +803,8 @@
 -  import_instr_limit = 30
 +  import_instr_limit = 100
+
    if (is_win) {
      ldflags += [
        "/opt:lldltojobs=all",
