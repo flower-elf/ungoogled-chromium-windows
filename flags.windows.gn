@@ -1,8 +1,6 @@
 chrome_pgo_phase=2
 enable_swiftshader=false
 ffmpeg_branding="Chrome"
-enable_ffmpeg_video_decoders = true
-use_vaapi = true
 is_clang=true
 is_component_build=false
 is_debug=false
